@@ -4,8 +4,52 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+/*-------------------body-parser--------------------*/
+var bodyParser = require('body-parser');
+/*-------------------body-parser--------------------*/
+
+
+
+/*-------------------express-validator--------------------*/
+var expressValidator = require('express-validator');
+/*-------------------express-validator--------------------*/
+
+
+
+/*-------------------dotenv--------------------*/
+//dotenv
+const dotenv = require('dotenv');
+dotenv.config();
+/*-------------------dotenv--------------------*/
+
+
+
+/*-------------------mongoose--------------------*/
+//mongoose
+const mongoose = require('mongoose');
+/*-------------------mongoose--------------------*/
+
+
+
+/*-------------------router--------------------*/
+//router
+var indexRoutes = require('./routes/index');
+/*-------------------router--------------------*/
+
+
+
+
+/*-------------------database connection--------------------*/
+//database connection
+mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true,useUnifiedTopology: true  } )
+    .then(()=>console.log('DB Connected'));
+
+mongoose.connection.on('error', err =>{
+  console.log(`DB Connection error ${err.message}`);
+});
+/*-------------------database connection--------------------*/
+
+
 
 var app = express();
 
@@ -14,13 +58,24 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 app.use(logger('dev'));
+
+app.use(bodyParser.json());
+
+/*-------------------express-validator--------------------*/
+app.use(expressValidator());
+/*-------------------express-validator--------------------*/
+
+
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+/*-------------------router--------------------*/
+//router
+app.use('/', indexRoutes);
+/*-------------------router--------------------*/
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
