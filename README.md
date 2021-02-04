@@ -17,7 +17,7 @@ npm run serve
 
 ```
 
-<p>then go to http://127.0.0.1:3000/</p>
+<p>then go to http://127.0.0.1:8000/</p>
 
 
 ### additional npm packages
